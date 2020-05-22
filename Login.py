@@ -9,7 +9,7 @@ class Login:
     def __init__(self):
         self.email = Setup.EMAIL
         self.password = Setup.PASSWORD
-        self.browser = webdriver.Chrome(executable_path=Setup.PATH)
+        self.browser = webdriver.Chrome(executable_path=Setup.CHROME_PATH)
 
     def get_website(self):
         url = 'https://www.instagram.com/accounts/login/?hl=en'
