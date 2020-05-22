@@ -20,13 +20,14 @@ class FileManager(Cleaner):
         name = 'from_insta'
         extension = '.jpeg'
         direct = self.dir + '\\' + name + extension
+        tmp = direct
         count = 1
-        while os.path.exists(direct):
+        while os.path.exists(tmp):
             count += 1
-            direct = self.rename_repetition(direct, count)
+            tmp = self.rename_repetition(direct, count)
             continue
 
-        return direct
+        return tmp
 
 
 if __name__ == '__main__':
