@@ -3,6 +3,7 @@ from selenium.common.exceptions import ElementNotInteractableException
 from Login import Login
 from time import sleep
 from selenium.webdriver.common.keys import Keys
+from IO import writefile
 
 
 def check_parent(tag):
@@ -44,8 +45,9 @@ class GetImageLink:
     def create_soup(self):
         source = self.browser.page_source
         soup = bs(source, 'lxml')
+        print(soup.encode('utf-8').prettify())
         self.scroll_down(soup)
-        # import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
 
         if soup not in self.soups:
             return soup
@@ -72,7 +74,11 @@ class GetImageLink:
     def get_link_each(self, count):
         locate = self.soups[count].find('div', class_='zGtbP IPQK5 VideM')
         import pdb; pdb.set_trace()
-        tmp = locate.next_sibling.find_all('img')
+        tmp = None
+        try:
+            tmp = locate.next_sibling.find_all('img')
+        except AttributeError:
+            print(self.soups[count].encode('utf-8'))
         want = [check_parent(tag) for tag in tmp]
         link = [each.get('src') for each in want if each is not None]
         print(link)

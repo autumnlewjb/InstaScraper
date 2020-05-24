@@ -46,6 +46,7 @@ class Login:
         # self.manage_save()
         # sleep(1)
         self.manage_note()
+        sleep(5)
 
 
 if __name__ == '__main__':
