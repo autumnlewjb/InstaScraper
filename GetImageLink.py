@@ -3,6 +3,7 @@ from selenium.common.exceptions import ElementNotInteractableException
 from Login import Login
 from time import sleep
 from selenium.webdriver.common.keys import Keys
+from Setup import PAGE_DOWN_TIME
 from IO import writefile
 
 
@@ -10,7 +11,7 @@ def check_parent(tag):
     # import pdb; pdb.set_trace()
     result = True
     parents = [str(i.name) for i in tag.parents]
-    print(parents)
+    # print(parents)
     for parent in parents:
         if parent == 'header':
             result = False
@@ -25,37 +26,26 @@ def check_parent(tag):
 
 
 num_of_elements = 0
+count = 0
 
 
 class GetImageLink:
 
     def __init__(self, browser):
         self.browser = browser
-        self.soups = []
-        # self.soups = [self.create_soup() for _ in range(10) if self.create_soup() is not None]
-
-        for _ in range(10):
-            # import pdb; pdb.set_trace()
-            if self.create_soup() is not None:
-                self.soups.append(self.create_soup())
-
-        print(len(self.soups))
-        self.links = self.get_link()
+        self.soup = None
+        self.links = []
+        self.get_image_link()
 
     def create_soup(self):
         source = self.browser.page_source
         soup = bs(source, 'lxml')
-        print(soup.encode('utf-8').prettify())
-        self.scroll_down(soup)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
-        if soup not in self.soups:
-            return soup
-        else:
-            return None
+        return soup
 
-    def scroll_down(self, soup):
-        doc = soup.html
+    def scroll_down(self):
+        doc = self.soup.html
         try:
             element = self.browser.find_element_by_tag_name('body')
             element.send_keys(Keys.PAGE_DOWN)
@@ -71,33 +61,49 @@ class GetImageLink:
                 except ElementNotInteractableException:
                     continue
 
-    def get_link_each(self, count):
-        locate = self.soups[count].find('div', class_='zGtbP IPQK5 VideM')
-        import pdb; pdb.set_trace()
+    def get_link_each(self):
+        locate = self.soup.find('div', class_='zGtbP IPQK5 VideM')
+        # import pdb; pdb.set_trace()
         tmp = None
         try:
             tmp = locate.next_sibling.find_all('img')
         except AttributeError:
-            print(self.soups[count].encode('utf-8'))
+            print(self.soup.encode('utf-8'))
         want = [check_parent(tag) for tag in tmp]
         link = [each.get('src') for each in want if each is not None]
-        print(link)
-        count += len(link)
-        print(count)
+        # print(link)
 
         return link
 
-    def get_link(self):
-        link = []
-        for i in range(len(self.soups)):
-            import pdb; pdb.set_trace()
-            tmp = self.get_link_each(i)
-            link.extend(tmp)
-
-        return link
+    # def get_link(self):
+    #     link = []
+    #     for i in range(len(self.soup)):
+    #         # import pdb; pdb.set_trace()
+    #         tmp = self.get_link_each(i)
+    #         link.extend(tmp)
+    #
+    #     return link
 
     def get_image_link(self):
-        pass
+        global count
+        self.soup = self.create_soup()
+        links = self.get_link_each()
+        for link in links:
+            if link not in self.links:
+                self.links.append(link)
+        count += 1
+        print(len(self.links))
+        if count < PAGE_DOWN_TIME:
+            self.scroll_down()
+            self.get_image_link()
+        elif len(self.links) == 0:
+            self.browser.find_element_by_tag_name('body').send_keys(Keys.HOME)
+            sleep(5)
+            count = 0
+            self.get_image_link()
+        else:
+            self.browser.quit()
+            print(self.links)
 
 
 if __name__ == '__main__':
@@ -105,5 +111,6 @@ if __name__ == '__main__':
     new_login.login_to_insta()
     get_image = GetImageLink(new_login.browser)
     sleep(5)
+    # get_image.get_image_link()
     print(get_image.links)
     print(len(get_image.links))

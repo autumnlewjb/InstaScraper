@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 import Setup
 
@@ -31,8 +32,17 @@ class Login:
             options[1].click()
 
     def manage_note(self):
-        accept = self.browser.find_element_by_xpath('//button[@class="aOOlW  bIiDR  "]')
-        reject = self.browser.find_element_by_xpath('//button[@class="aOOlW   HoLwm "]')
+        accept = None
+        reject = None
+        while True:
+            try:
+                accept = self.browser.find_element_by_xpath('//button[@class="aOOlW  bIiDR  "]')
+                reject = self.browser.find_element_by_xpath('//button[@class="aOOlW   HoLwm "]')
+                break
+            except NoSuchElementException:
+                sleep(5)
+                continue
+
         if Setup.TURN_ON_NOTE:
             accept.click()
         else:
@@ -43,10 +53,13 @@ class Login:
         sleep(5)
         self.login()
         sleep(5)
-        # self.manage_save()
-        # sleep(1)
+        try:
+            self.manage_save()
+            sleep(1)
+        except NoSuchElementException:
+            pass
         self.manage_note()
-        sleep(5)
+        sleep(10)
 
 
 if __name__ == '__main__':

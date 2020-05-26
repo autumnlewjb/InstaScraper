@@ -15,10 +15,10 @@ class DownloadImage(GetImageLink):
 
     def fetch_image(self):
         complete = []
-        for link in self.links:
-            req = [requests.get(lk) for lk in link]
-            in_byte = [io.BytesIO(request.content) for request in req]
-            complete.extend(in_byte)
+
+        req = [requests.get(lk) for lk in self.links]
+        in_byte = [io.BytesIO(request.content) for request in req]
+        complete.extend(in_byte)
 
         return complete
 
