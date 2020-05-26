@@ -1,9 +1,9 @@
-from Cleaner import Cleaner
+from Cleaner import rename_repetition
 from Setup import SAVE_PATH
 import os
 
 
-class FileManager(Cleaner):
+class FileManager:
 
     def __init__(self):
         self.dir = SAVE_PATH
@@ -24,7 +24,7 @@ class FileManager(Cleaner):
         count = 1
         while os.path.exists(tmp):
             count += 1
-            tmp = self.rename_repetition(direct, count)
+            tmp = rename_repetition(direct, count)
             continue
 
         return tmp

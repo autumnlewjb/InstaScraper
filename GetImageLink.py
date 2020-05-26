@@ -4,7 +4,6 @@ from Login import Login
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 from Setup import PAGE_DOWN_TIME
-from IO import writefile
 
 
 def check_parent(tag):
@@ -25,7 +24,6 @@ def check_parent(tag):
         return None
 
 
-num_of_elements = 0
 count = 0
 
 
@@ -74,15 +72,6 @@ class GetImageLink:
         # print(link)
 
         return link
-
-    # def get_link(self):
-    #     link = []
-    #     for i in range(len(self.soup)):
-    #         # import pdb; pdb.set_trace()
-    #         tmp = self.get_link_each(i)
-    #         link.extend(tmp)
-    #
-    #     return link
 
     def get_image_link(self):
         global count

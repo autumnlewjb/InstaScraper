@@ -1,6 +1,4 @@
-import Setup
 from Login import Login
-from GetImageLink import GetImageLink
 from DownloadImage import DownloadImage
 
 if __name__ == '__main__':

@@ -1,8 +1,6 @@
 import io
 from PIL import Image
-from Login import Login
 from GetImageLink import GetImageLink
-import os
 import requests
 from FileManager import FileManager
 

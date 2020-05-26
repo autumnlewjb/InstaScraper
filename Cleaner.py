@@ -22,6 +22,13 @@ extensions = {
     'Text' : ['.doc','.docx','.odt','.pdf','.rtf','.tex','.txt','.wpd'],
 }
 
+
+def rename_repetition(new_dir, no):
+    break_dir = os.path.splitext(new_dir)
+    new_dir = str(break_dir[0]) + "(" + str(no) + ")" + str(break_dir[1])
+    return new_dir
+
+
 class Cleaner:
     def __init__(self,only_folder_exist):
         self.only_folder_exist = only_folder_exist
@@ -75,11 +82,11 @@ class Cleaner:
                     os.rename(old_dir,new_dir)
                 else:
                     count = 1
-                    new_new_dir = self.rename_repetition(new_dir,count)
+                    new_new_dir = rename_repetition(new_dir,count)
                     print(new_new_dir)
                     while os.path.exists(new_new_dir):
                         count += 1
-                        new_new_dir = self.rename_repetition(new_dir,count)
+                        new_new_dir = rename_repetition(new_dir,count)
                         print("enter loop")
 
                     os.rename(old_dir,new_new_dir)
@@ -103,11 +110,6 @@ class Cleaner:
     def main_process(self):
         if self.detect_new_folder():
             self.moving_file(extensions)
-
-    def rename_repetition(self,new_dir,no):
-        break_dir = os.path.splitext(new_dir)
-        new_dir = str(break_dir[0]) + "(" + str(no) + ")" + str(break_dir[1])
-        return new_dir
 
 
 if __name__ == '__main__':
