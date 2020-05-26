@@ -38,6 +38,7 @@ class Login:
         password_box.send_keys(Keys.ENTER)
 
     def manage_save(self):
+        identify = self.browser.find_element_by_class_name('coreSpriteKeyhole')
         options = self.browser.find_elements_by_tag_name('button')
         if Setup.SAVE_LOGIN:
             options[0].click()
@@ -65,6 +66,10 @@ class Login:
     def login_to_insta(self):
         self.get_website()
         self.login()
+        try:
+            self.manage_save()
+        except NoSuchElementException:
+            pass
         self.manage_note()
         sleep(10)
 

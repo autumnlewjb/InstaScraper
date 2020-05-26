@@ -3,11 +3,12 @@ from selenium.common.exceptions import ElementNotInteractableException
 from Login import Login
 from time import sleep
 from selenium.webdriver.common.keys import Keys
+
+from Logout import log_out
 from Setup import PAGE_DOWN_TIME
 
 
 def check_parent(tag):
-    # import pdb; pdb.set_trace()
     result = True
     parents = [str(i.name) for i in tag.parents]
     # print(parents)
@@ -38,7 +39,6 @@ class GetImageLink:
     def create_soup(self):
         source = self.browser.page_source
         soup = bs(source, 'lxml')
-        # import pdb; pdb.set_trace()
 
         return soup
 
@@ -61,7 +61,6 @@ class GetImageLink:
 
     def get_link_each(self):
         locate = self.soup.find('div', class_='zGtbP IPQK5 VideM')
-        # import pdb; pdb.set_trace()
         tmp = None
         try:
             tmp = locate.next_sibling.find_all('img')
@@ -69,7 +68,6 @@ class GetImageLink:
             print(self.soup.encode('utf-8'))
         want = [check_parent(tag) for tag in tmp]
         link = [each.get('src') for each in want if each is not None]
-        # print(link)
 
         return link
 
@@ -91,6 +89,7 @@ class GetImageLink:
             count = 0
             self.get_image_link()
         else:
+            log_out(self.browser)
             self.browser.quit()
             print(self.links)
 
@@ -100,6 +99,5 @@ if __name__ == '__main__':
     new_login.login_to_insta()
     get_image = GetImageLink(new_login.browser)
     sleep(5)
-    # get_image.get_image_link()
     print(get_image.links)
     print(len(get_image.links))
