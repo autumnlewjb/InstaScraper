@@ -68,8 +68,8 @@ class Login:
         self.login()
         try:
             self.manage_save()
-        except NoSuchElementException:
-            pass
+        except NoSuchElementException as e:
+            print(e)
         self.manage_note()
         sleep(10)
 
