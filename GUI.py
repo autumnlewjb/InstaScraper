@@ -1,42 +1,72 @@
 from tkinter import *
+import Setup
+from ctypes import windll
 
 email = None
 username = None
 password = None
+save = 0
+
+windll.shcore.SetProcessDpiAwareness(1)
 
 
 class Gui(Tk):
-    def close_and_open(self):
+    def close_intro(self):
         self.destroy()
-        get_info()
+        basic_info()
 
-    def close_and_print(self):
-        global email, username, password
+    def close_info(self):
+        global email, username, password, save
         self.destroy()
         email = email.get()
         username = username.get()
         password = password.get()
         print(email, username, password)
+        # save_note()
+
+    def save(self):
+        global save
+        self.destroy()
+        save = 1
+
+    def dont_save(self):
+        global save
+        self.destroy()
+        save = 0
 
 
-def get_info():
+def intro():
+    root = Gui()
+    root.title('Get Started')
+
+    label = Label(text='Get Started')
+    label.pack()
+
+    button = Button(text='OK', command=root.close_intro)
+    button.pack()
+    root.mainloop()
+
+
+def basic_info():
     global email, username, password
-    root2 = Gui()
+    root = Gui()
+    root.title('Login Information')
+
     email = StringVar()
     username = StringVar()
     password = StringVar()
 
-    master_frame_1 = Frame(master=root2)
-    master_frame_2 = Frame(master=root2)
+    master_frame_1 = Frame(master=root)
+    master_frame_2 = Frame(master=root)
     master_frame_1.pack()
     master_frame_2.pack()
 
     f1 = Frame(master=master_frame_1)
     f1.pack(side=LEFT)
 
-    label1 = Label(master=f1, text='Email: ', pady=5)
-    label2 = Label(master=f1, text='Password: ', pady=5)
-    label3 = Label(master=f1, text='Username: ', pady=5)
+    label1 = Label(master=f1, text='Email: ', pady=3.5)
+    label2 = Label(master=f1, text='Password: ', pady=3.5)
+    label3 = Label(master=f1, text='Username: ', pady=3.5)
     label1.pack()
     label2.pack()
     label3.pack()
@@ -56,22 +86,43 @@ def get_info():
 
     f3 = Frame(master=master_frame_2)
     f3.pack()
-    confirm = Button(master=f3, text='Confirm', command=root2.destroy)
+    confirm = Button(master=f3, text='Confirm', command=root.close_info)
     confirm.pack()
 
-    root2.mainloop()
-    email = email.get()
-    username = username.get()
-    password = password.get()
-    print(email, username, password)
+    root.mainloop()
 
 
-root = Gui()
-root.title('Get Started')
+def save_info():
+    global save
+    root = Gui()
+    label = Label(text='Save login information to be reused next time? ')
+    label.pack()
 
-label = Label(text='Get Started')
-label.pack()
+    accept = Button(text='Accept', command=root.save)
+    accept.pack(side=LEFT)
+    reject = Button(text='Cancel', command=root.dont_save)
+    reject.pack()
 
-button = Button(text='OK', command=root.close_and_open)
-button.pack()
-root.mainloop()
+    root.mainloop()
+    record_save(save)
+
+
+def record_save(option):
+    with open('remember-me.txt', 'w') as output_text:
+        output_text.write(str(option))
+
+
+def read_save():
+    with open('remember-me.txt', 'r') as input_text:
+        return int(input_text.read())
+
+
+def gui_implement():
+    intro()
+    Setup.EMAIL = email
+    Setup.PASSWORD = password
+    Setup.CURRENT_USERNAME = username
+
+
+if __name__ == '__main__':
+    gui_implement()
