@@ -117,6 +117,10 @@ def read_save():
         return int(input_text.read())
 
 
+def write_info():
+    pass
+
+
 def gui_implement():
     intro()
     Setup.EMAIL = email
