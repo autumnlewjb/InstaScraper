@@ -21,6 +21,7 @@ class Gui(Tk):
         email = email.get()
         username = username.get()
         password = password.get()
+        write_info()
         print(email, username, password)
         # save_note()
 
@@ -49,12 +50,16 @@ def intro():
 
 def basic_info():
     global email, username, password
+    read_info()
     root = Gui()
     root.title('Login Information')
 
     email = StringVar()
     username = StringVar()
     password = StringVar()
+
+    email.set(Setup.EMAIL)
+    username.set(Setup.CURRENT_USERNAME)
 
     master_frame_1 = Frame(master=root)
     master_frame_2 = Frame(master=root)
@@ -118,14 +123,37 @@ def read_save():
 
 
 def write_info():
-    pass
+    global email, username
+    if Setup.EMAIL == email and Setup.CURRENT_USERNAME == username:
+        pass
+    else:
+        with open('remember-me.txt', 'w+') as output_file:
+            output_file.write("{},{}".format(email, username))
+
+
+def read_info():
+    with open('remember-me.txt', 'r') as input_file:
+        result = input_file.read()
+        result = result.strip().split(",")
+    if len(result) == 2:
+        Setup.EMAIL = result[0]
+        Setup.CURRENT_USERNAME = result[1]
+
+    else:
+        # result = result.strip().split(',')
+        Setup.EMAIL = ''
+        Setup.CURRENT_USERNAME = ''
+
+
+def setup():
+    Setup.EMAIL = email
+    Setup.PASSWORD = password
+    Setup.CURRENT_USERNAME = username
 
 
 def gui_implement():
     intro()
-    Setup.EMAIL = email
-    Setup.PASSWORD = password
-    Setup.CURRENT_USERNAME = username
+    setup()
 
 
 if __name__ == '__main__':

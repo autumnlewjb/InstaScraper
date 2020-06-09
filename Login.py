@@ -7,6 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import TimeoutException
 
 import Setup
 
@@ -38,42 +39,29 @@ class Login:
         password_box.send_keys(Keys.ENTER)
 
     def manage_save(self):
-        identify = self.browser.find_element_by_class_name('coreSpriteKeyhole')
-        options = self.browser.find_elements_by_tag_name('button')
-        if Setup.SAVE_LOGIN:
-            options[0].click()
-        else:
-            options[1].click()
+        wait = WebDriverWait(self.browser, 30)
+        wait.until(EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Not Now')]")))
+        identify = self.browser.find_element_by_xpath("//button[contains(text(), 'Not Now')]")
+        identify.click()
 
     def manage_note(self):
-        accept = None
-        reject = None
-        wait = WebDriverWait(self.browser, 30)
-        wait.until(EC.presence_of_element_located((By.XPATH, '//button[@class="aOOlW  bIiDR  "]')))
-        while True:
-            try:
-                accept = self.browser.find_element_by_xpath('//button[@class="aOOlW  bIiDR  "]')
-                reject = self.browser.find_element_by_xpath('//button[@class="aOOlW   HoLwm "]')
-                break
-            except NoSuchElementException as e:
-                print(e)
-
-        if Setup.TURN_ON_NOTE:
-            accept.click()
-        else:
-            reject.click()
+        wait = WebDriverWait(self.browser, 5)
+        wait.until(EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Not Now')]")))
+        identify = self.browser.find_element_by_xpath("//button[contains(text(), 'Not Now')]")
+        identify.click()
 
     def login_to_insta(self):
         self.get_website()
         self.login()
+        self.manage_save()
         try:
-            self.manage_save()
-        except NoSuchElementException as e:
+            self.manage_note()
+        except TimeoutException as e:
             print(e)
-        self.manage_note()
         sleep(10)
 
 
 if __name__ == '__main__':
     new_login = Login()
     new_login.login_to_insta()
+    new_login.browser.quit()
