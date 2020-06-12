@@ -58,7 +58,7 @@ class Login:
             self.manage_note()
         except TimeoutException as e:
             print(e)
-        sleep(10)
+        sleep(5)
 
 
 if __name__ == '__main__':
