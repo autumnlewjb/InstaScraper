@@ -46,25 +46,84 @@ class GetFollower:
         # print(self.soup.prettify())
 
     def get_numbers(self):
+        self.make_soup()
         ul = self.soup.find('ul', class_='k9GMp')
+        numbers = dict()
         for element in ul.children:
-            print(element.get_text())
+            text = element.get_text()
+            if not text:
+                pass
+            elif re.search('post', text):
+                numbers['posts'] = int(text.split(' ')[0])
+            elif re.search('follower', text):
+                numbers['followers'] = int(text.split(' ')[0])
+            elif re.search('following', text):
+                numbers['following'] = int(text.split(' ')[0])
 
-    def follower_list(self):
+        return numbers
+
+    def _follower_list(self):
         self._wait("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME))
         self.browser.find_element_by_xpath("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME)).click()
-        time.sleep(10)
+        # time.sleep(30)
+
+        flag = list()
+        count = 0
+        # TODO: get 228 out of 229 followers written on Instagram
+        while len(flag) != 228:
+            flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
+            time.sleep(2)
+            count += 1
+            if count % 20 == 0:
+                self.browser.refresh()
+                self._wait("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME))
+                self.browser.find_element_by_xpath("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME)).click()
+
         self.make_soup()
 
-    # TODO: this sometimes don't work check this later (might be due to the sleep)
-    def print_list(self):
-        div = self.soup.find_all('li', class_='wo9IH')
-        print(len(div))
-        for child in div:
-            print(child.find_all('a', href='d7ByH').get_text())
+    def _following_list(self):
+        self._wait("//a[@href='/{}/following/']".format(Setup.CURRENT_USERNAME))
+        self.browser.find_element_by_xpath("//a[@href='/{}/following/']".format(Setup.CURRENT_USERNAME)).click()
+        # time.sleep(30)
+        flag = list()
+        count = 0
+        while len(flag) != 288:
+            flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
+            time.sleep(2)
+            count += 1
+            if count % 20 == 0:
+                self.browser.refresh()
+                self._wait("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME))
+                self.browser.find_element_by_xpath("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME)).click()
 
-        # for li in div:
-        #     print(li.get_text())
+        self.make_soup()
+
+    def _print_list(self):
+        div = self.soup.find_all('div', class_='d7ByH')
+        result = [element.get_text() for element in div]
+        # print(len(div))
+        # for element in div:
+        #     print(element.get_text())
+        print(result)
+        return result
+
+    def confirm_number(self):
+        print(len(self.soup.find('div', class_='PZuss').contents))
+
+    def follower_list(self):
+        self._follower_list()
+        self.browser.refresh()
+        return self._print_list()
+
+    def following_list(self):
+        self._following_list()
+        self.browser.refresh()
+        return self._print_list()
+
+    def no_friend_list(self):
+        followers = self.follower_list()
+        followings = self.following_list()
+        return [following for following in followings if following not in followers]
 
 
 if __name__ == '__main__':
@@ -74,9 +133,8 @@ if __name__ == '__main__':
     get_follower.homepage()
     get_follower.profile()
 
-    # get_follower.make_soup()
-    # get_follower.get_numbers()
-    # get_follower.browser.quit()
-
-    get_follower.follower_list()
-    get_follower.print_list()
+    # print(get_follower.follower_list())
+    # print(get_follower.following_list())
+    # print(get_follower.no_friend_list())
+    # for x, y in get_follower.get_numbers().items():
+    #     print(x, y)
