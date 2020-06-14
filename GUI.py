@@ -1,6 +1,7 @@
 from tkinter import *
 import Setup
 from ctypes import windll
+from menu import menu
 
 email = None
 username = None
@@ -151,10 +152,57 @@ def setup():
     Setup.CURRENT_USERNAME = username
 
 
-def gui_implement():
+def intro_gui():
     intro()
     setup()
 
 
+def details_gui(number_dict=None):
+    if number_dict is None:
+        number_dict = dict()
+    root = Gui()
+
+    account_details = Frame(master=root)
+    account_details.pack()
+    numbers = Frame(master=root)
+    numbers.pack()
+    options = Frame(master=root)
+    options.pack()
+
+    account_detail_1 = Label(master=account_details, text='Email: {}'.format(Setup.EMAIL))
+    account_detail_2 = Label(master=account_details, text='Username: {}'.format(Setup.CURRENT_USERNAME))
+    account_detail_1.pack()
+    account_detail_2.pack()
+
+    try:
+        posts = Label(master=numbers, text='Posts: {}'.format(number_dict['post']))
+        follower = Label(master=numbers, text='Followers: {}'.format(number_dict['follower']))
+        following = Label(master=numbers, text='Following: {}'.format(number_dict['following']))
+        posts.pack()
+        follower.pack()
+        following.pack()
+    except KeyError:
+        pass
+
+    tmp = ''
+    for x, y in menu.items():
+        tmp += '{} {}\n'.format(x, y)
+
+    option_menu = Label(master=options, text=tmp, justify='left')
+    option_menu.pack()
+
+    user_option = StringVar(value='Your option....')
+    choice = Entry(master=options, textvariable=user_option)
+    choice.pack()
+
+    confirm = Button(master=options, text='Confirm', command=root.destroy)
+    confirm.pack()
+
+    root.mainloop()
+
+    return int(user_option.get())
+
+
 if __name__ == '__main__':
-    gui_implement()
+    intro_gui()
+    details_gui()

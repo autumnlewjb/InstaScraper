@@ -45,7 +45,7 @@ class GetFollower:
         self.soup = bs(source, 'lxml')
         # print(self.soup.prettify())
 
-    def get_numbers(self):
+    def _get_numbers(self):
         self.make_soup()
         ul = self.soup.find('ul', class_='k9GMp')
         numbers = dict()
@@ -54,9 +54,9 @@ class GetFollower:
             if not text:
                 pass
             elif re.search('post', text):
-                numbers['posts'] = int(text.split(' ')[0])
+                numbers['post'] = int(text.split(' ')[0])
             elif re.search('follower', text):
-                numbers['followers'] = int(text.split(' ')[0])
+                numbers['follower'] = int(text.split(' ')[0])
             elif re.search('following', text):
                 numbers['following'] = int(text.split(' ')[0])
 
@@ -69,8 +69,8 @@ class GetFollower:
 
         flag = list()
         count = 0
-        # TODO: get 228 out of 229 followers written on Instagram
-        while len(flag) != 228:
+
+        while len(flag) != Setup.DETAILS['follower']:
             flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
             time.sleep(2)
             count += 1
@@ -87,7 +87,8 @@ class GetFollower:
         # time.sleep(30)
         flag = list()
         count = 0
-        while len(flag) != 288:
+        # TODO: the calling of the method get_numbers is causing infinite loop
+        while len(flag) != Setup.DETAILS['following']:
             flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
             time.sleep(2)
             count += 1
@@ -111,19 +112,35 @@ class GetFollower:
         print(len(self.soup.find('div', class_='PZuss').contents))
 
     def follower_list(self):
+        self.homepage()
+        self.profile()
+        print('follower')
+
         self._follower_list()
         self.browser.refresh()
         return self._print_list()
 
     def following_list(self):
+        self.homepage()
+        self.profile()
+        print('following')
+
         self._following_list()
         self.browser.refresh()
         return self._print_list()
 
     def no_friend_list(self):
+        print('running this')
         followers = self.follower_list()
         followings = self.following_list()
         return [following for following in followings if following not in followers]
+
+    def get_numbers(self):
+        self.homepage()
+        self.profile()
+        print('this is the problem')
+        Setup.DETAILS = self._get_numbers()
+        return Setup.DETAILS
 
 
 if __name__ == '__main__':

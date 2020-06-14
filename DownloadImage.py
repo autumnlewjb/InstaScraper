@@ -26,7 +26,7 @@ class DownloadImage(GetImageLink):
             new_file = FileManager()
             with open(new_file.filename(), 'wb') as fp:
                 new_image.save(fp)
-                fp.close()
+                # fp.close()
 
 
 if __name__ == '__main__':
