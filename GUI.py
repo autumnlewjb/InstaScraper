@@ -203,6 +203,15 @@ def details_gui(number_dict=None):
     return int(user_option.get())
 
 
+def result_gui():
+    pass
+
+
+def add_status():
+    pass
+
+
 if __name__ == '__main__':
     intro_gui()
     details_gui()
+    # result_gui()

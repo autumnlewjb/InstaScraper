@@ -3,16 +3,15 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
-
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import TimeoutException
+from selenium.webdriver.support.wait import WebDriverWait
 
 import Setup
+from InstaScraper import InstaScraper
 
 
-class Login:
+class LogIn(InstaScraper):
 
     def __init__(self):
         self.email = Setup.EMAIL
@@ -50,7 +49,7 @@ class Login:
         identify = self.browser.find_element_by_xpath("//button[contains(text(), 'Not Now')]")
         identify.click()
 
-    def login_to_insta(self):
+    def main(self):
         self.get_website()
         self.login()
         self.manage_save()
@@ -59,9 +58,10 @@ class Login:
         except TimeoutException as e:
             print(e)
         sleep(5)
+        return 'Logged in into your account'
 
 
 if __name__ == '__main__':
-    new_login = Login()
-    new_login.login_to_insta()
+    new_login = LogIn()
+    new_login.main()
     new_login.browser.quit()

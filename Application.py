@@ -1,8 +1,8 @@
 from GUI import intro_gui, details_gui
-from Login import Login
-from GetFollower import GetFollower
-from Logout import log_out
-from DownloadImage import DownloadImage
+from Login import LogIn
+from ScrapeInfo import GetFollower, GetFollowing, GetNumbers, NoFriend
+from Logout import LogOut
+from ScrapeImage import DownloadImage
 
 
 if __name__ == '__main__':
@@ -10,25 +10,29 @@ if __name__ == '__main__':
     intro_gui()
 
     # Login to user's Instagram account
-    new_login = Login()
-    new_login.login_to_insta()
+    new_login = LogIn()
+    new_login.main()
 
-    # Get numbers
-    new_get = GetFollower(new_login.browser)
-    user_option = details_gui(new_get.get_numbers())
-    new_get.homepage()
+    # Get numbers of posts, follower and following
+    numbers = GetNumbers(new_login.browser).main()
 
-    if user_option == 1:
-        log_out(new_login.browser)
-    elif user_option == 2:
-        # get all image links
-        download = DownloadImage(new_login.browser)
-        download.save_image()
-    elif user_option == 3:
-        print(new_get.follower_list())
-    elif user_option == 4:
-        print(new_get.following_list())
-    elif user_option == 5:
-        the_list = new_get.no_friend_list()
-        print(the_list)
-        print(len(the_list))
+    # Get user input
+    user_input = details_gui(numbers)
+
+    if user_input == 1:
+        # Log out from the account
+        LogOut(new_login.browser).result_gui()
+    elif user_input == 2:
+        # Scrape image
+        DownloadImage(new_login.browser).result_gui()
+    elif user_input == 3:
+        # Get a list of followers
+        GetFollower(new_login.browser).result_gui()
+    elif user_input == 4:
+        # Get a list of following
+        GetFollowing(new_login.browser).result_gui()
+    elif user_input == 5:
+        # Get a list of those who you followed but they don't follow you back
+        NoFriend(new_login.browser).result_gui()
+
+    new_login.browser.quit()
