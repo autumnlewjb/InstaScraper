@@ -95,9 +95,11 @@ class GetImageLink:
 
 
 if __name__ == '__main__':
-    new_login = LogIn()
-    new_login.main()
-    get_image = GetImageLink(new_login.browser)
-    sleep(5)
-    print(get_image.links)
-    print(len(get_image.links))
+    # new_login = LogIn()
+    # new_login.main()
+    # get_image = GetImageLink(new_login.browser)
+    # sleep(5)
+    # print(get_image.links)
+    # print(len(get_image.links))
+
+    pass

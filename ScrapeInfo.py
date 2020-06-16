@@ -1,6 +1,6 @@
 import time
 
-from Login import LogIn
+# from Login import LogIn
 import Setup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -56,7 +56,7 @@ class GetFollower(InstaScraper):
         flag = list()
         count = 0
 
-        while len(flag) != Setup.DETAILS['follower']:
+        while len(flag) < Setup.DETAILS['follower']:
             flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
             time.sleep(2)
             count += 1
@@ -65,15 +65,17 @@ class GetFollower(InstaScraper):
                 self._wait("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME))
                 self.browser.find_element_by_xpath("//a[@href='/{}/followers/']".format(Setup.CURRENT_USERNAME)).click()
 
+            print(len(flag))
+
         self.make_soup()
 
     def _print_list(self):
         div = self.soup.find_all('div', class_='d7ByH')
-        result_list = [element.get_text() for element in div]
+        result_list = [element.a.get_text() for element in div if not element.find('span', string='Verified')]
         # print(len(div))
-        # for element in div:
-        #     print(element.get_text())
-        print(result_list)
+        for element in div:
+            print(element.get_text())
+        # print(result_list)
         return result_list
 
     def confirm_number(self):
@@ -93,7 +95,7 @@ class GetFollowing(GetFollower):
         # time.sleep(30)
         flag = list()
         count = 0
-        while len(flag) != Setup.DETAILS['following']:
+        while len(flag) < Setup.DETAILS['following']:
             flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
             time.sleep(2)
             count += 1
@@ -107,7 +109,7 @@ class GetFollowing(GetFollower):
     def main(self):
         self.profile()
         self._following_list()
-        self.browser.refresh()
+        # self.browser.refresh()
         return self._print_list()
 
 
@@ -141,21 +143,24 @@ class NoFriend(GetFollowing, GetFollower):
     def main(self):
         followers = GetFollower(self.browser).main()
         followings = GetFollowing(self.browser).main()
-        return [following for following in followings if following not in followers]
+        Setup.NO_FRIEND_LIST = [following for following in followings if following not in followers]
+        return Setup.NO_FRIEND_LIST
 
 
 if __name__ == '__main__':
-    login = LogIn()
-    login.main()
+    # only import when you need it (circular import)
+    # login = LogIn()
+    # login.main()
 
-    get_numbers = GetNumbers(login.browser)
-    get_numbers.main()
+    # This must run first
 
-    get_follower = GetFollower(login.browser)
-    get_follower.result_gui()
+    # get_follower = GetFollower(login.browser)
+    # get_follower.result_gui()
 
     # get_following = GetFollowing(login.browser)
     # get_following.result_gui()
 
     # no_friend_list = NoFriend(login.browser)
     # no_friend_list.result_gui()
+
+    pass

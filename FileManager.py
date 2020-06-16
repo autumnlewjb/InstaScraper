@@ -31,5 +31,7 @@ class FileManager:
 
 
 if __name__ == '__main__':
-    new_file = FileManager()
-    print(new_file.filename())
+    # new_file = FileManager()
+    # print(new_file.filename())
+
+    pass

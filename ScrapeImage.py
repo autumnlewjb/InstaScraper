@@ -119,12 +119,13 @@ class DownloadImage(InstaScraper):
             new_file = FileManager()
             with open(new_file.filename(), 'wb') as fp:
                 new_image.save(fp)
-                # fp.close()
         return 'All image saved in the directory: ' + Setup.SAVE_PATH
 
 
 if __name__ == '__main__':
-    new_login = LogIn()
-    new_login.main()
-    obj = DownloadImage(new_login.browser)
-    obj.result_gui()
+    # new_login = LogIn()
+    # new_login.main()
+    # obj = DownloadImage(new_login.browser)
+    # obj.result_gui()
+
+    pass

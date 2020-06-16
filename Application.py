@@ -3,6 +3,7 @@ from Login import LogIn
 from ScrapeInfo import GetFollower, GetFollowing, GetNumbers, NoFriend
 from Logout import LogOut
 from ScrapeImage import DownloadImage
+from Unfollowing import Unfollowing
 
 
 if __name__ == '__main__':
@@ -34,5 +35,9 @@ if __name__ == '__main__':
     elif user_input == 5:
         # Get a list of those who you followed but they don't follow you back
         NoFriend(new_login.browser).result_gui()
+    elif user_input == 6:
+        # Unfollow those who don't follow you back
+        # Run NoFriend first if NoFriend is not run before hand
+        Unfollowing(new_login.browser).result_gui()
 
     new_login.browser.quit()

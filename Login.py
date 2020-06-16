@@ -9,6 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 import Setup
 from InstaScraper import InstaScraper
+from ScrapeInfo import GetNumbers
 
 
 class LogIn(InstaScraper):
@@ -58,10 +59,13 @@ class LogIn(InstaScraper):
         except TimeoutException as e:
             print(e)
         sleep(5)
+        GetNumbers(self.browser).main()
         return 'Logged in into your account'
 
 
 if __name__ == '__main__':
-    new_login = LogIn()
-    new_login.main()
-    new_login.browser.quit()
+    # new_login = LogIn()
+    # new_login.main()
+    # new_login.browser.quit()
+
+    pass

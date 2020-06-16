@@ -212,6 +212,8 @@ def add_status():
 
 
 if __name__ == '__main__':
-    intro_gui()
-    details_gui()
+    # intro_gui()
+    # details_gui()
     # result_gui()
+
+    pass
