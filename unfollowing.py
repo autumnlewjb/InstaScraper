@@ -1,8 +1,8 @@
 import time
 
-import Setup
-from ScrapeInfo import NoFriend
-from Login import LogIn
+import setup
+from scrape_info import NoFriend
+from login import LogIn
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 class Unfollowing(NoFriend):
     def main(self):
         return_status = list()
-        unfollow_list = Setup.NO_FRIEND_LIST
+        unfollow_list = setup.NO_FRIEND_LIST
         if not unfollow_list:
             unfollow_list = NoFriend(self.browser).main()
 

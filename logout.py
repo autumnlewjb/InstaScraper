@@ -1,5 +1,5 @@
-from Setup import CURRENT_USERNAME
-from InstaScraper import InstaScraper
+from setup import CURRENT_USERNAME
+from insta_scraper import InstaScraper
 
 
 class LogOut(InstaScraper):

@@ -1,5 +1,5 @@
 from tkinter import *
-import Setup
+import setup
 from ctypes import windll
 from menu import menu
 
@@ -59,8 +59,8 @@ def basic_info():
     username = StringVar()
     password = StringVar()
 
-    email.set(Setup.EMAIL)
-    username.set(Setup.CURRENT_USERNAME)
+    email.set(setup.EMAIL)
+    username.set(setup.CURRENT_USERNAME)
 
     master_frame_1 = Frame(master=root)
     master_frame_2 = Frame(master=root)
@@ -125,7 +125,7 @@ def read_save():
 
 def write_info():
     global email, username
-    if Setup.EMAIL == email and Setup.CURRENT_USERNAME == username:
+    if setup.EMAIL == email and setup.CURRENT_USERNAME == username:
         pass
     else:
         with open('remember-me.txt', 'w+') as output_file:
@@ -137,24 +137,24 @@ def read_info():
         result = input_file.read()
         result = result.strip().split(",")
     if len(result) == 2:
-        Setup.EMAIL = result[0]
-        Setup.CURRENT_USERNAME = result[1]
+        setup.EMAIL = result[0]
+        setup.CURRENT_USERNAME = result[1]
 
     else:
         # result = result.strip().split(',')
-        Setup.EMAIL = ''
-        Setup.CURRENT_USERNAME = ''
+        setup.EMAIL = ''
+        setup.CURRENT_USERNAME = ''
 
 
-def setup():
-    Setup.EMAIL = email
-    Setup.PASSWORD = password
-    Setup.CURRENT_USERNAME = username
+def setup_info():
+    setup.EMAIL = email
+    setup.PASSWORD = password
+    setup.CURRENT_USERNAME = username
 
 
 def intro_gui():
     intro()
-    setup()
+    setup_info()
 
 
 def details_gui(number_dict=None):
@@ -169,8 +169,8 @@ def details_gui(number_dict=None):
     options = Frame(master=root)
     options.pack()
 
-    account_detail_1 = Label(master=account_details, text='Email: {}'.format(Setup.EMAIL))
-    account_detail_2 = Label(master=account_details, text='Username: {}'.format(Setup.CURRENT_USERNAME))
+    account_detail_1 = Label(master=account_details, text='Email: {}'.format(setup.EMAIL))
+    account_detail_2 = Label(master=account_details, text='Username: {}'.format(setup.CURRENT_USERNAME))
     account_detail_1.pack()
     account_detail_2.pack()
 

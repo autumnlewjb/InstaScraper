@@ -1,9 +1,9 @@
-from GUI import intro_gui, details_gui
-from Login import LogIn
-from ScrapeInfo import GetFollower, GetFollowing, GetNumbers, NoFriend
-from Logout import LogOut
-from ScrapeImage import DownloadImage
-from Unfollowing import Unfollowing
+from gui import intro_gui, details_gui
+from login import LogIn
+from scrape_info import GetFollower, GetFollowing, GetNumbers, NoFriend
+from logout import LogOut
+from scrape_image import DownloadImage
+from unfollowing import Unfollowing
 
 
 if __name__ == '__main__':

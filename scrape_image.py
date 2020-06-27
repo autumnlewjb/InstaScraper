@@ -7,12 +7,12 @@ from bs4 import BeautifulSoup as bs
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.webdriver.common.keys import Keys
 
-import Setup
-from FileManager import FileManager
-from InstaScraper import InstaScraper
-from Login import LogIn
-from Logout import LogOut
-from Setup import PAGE_DOWN_TIME
+import setup
+from file_manager import FileManager
+from insta_scraper import InstaScraper
+from login import LogIn
+from logout import LogOut
+from setup import PAGE_DOWN_TIME
 
 
 def check_parent(tag):
@@ -119,7 +119,7 @@ class DownloadImage(InstaScraper):
             new_file = FileManager()
             with open(new_file.filename(), 'wb') as fp:
                 new_image.save(fp)
-        return 'All image saved in the directory: ' + Setup.SAVE_PATH
+        return 'All image saved in the directory: ' + setup.SAVE_PATH
 
 
 if __name__ == '__main__':

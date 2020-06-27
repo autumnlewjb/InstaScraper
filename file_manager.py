@@ -1,5 +1,5 @@
 from Cleaner import rename_repetition
-from Setup import SAVE_PATH
+from setup import SAVE_PATH
 import os
 
 

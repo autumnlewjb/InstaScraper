@@ -7,17 +7,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 
-import Setup
-from InstaScraper import InstaScraper
-from ScrapeInfo import GetNumbers
+import setup
+from insta_scraper import InstaScraper
+from scrape_info import GetNumbers
 
 
 class LogIn(InstaScraper):
 
     def __init__(self):
-        self.email = Setup.EMAIL
-        self.password = Setup.PASSWORD
-        self.browser = webdriver.Chrome(executable_path=Setup.CHROME_PATH)
+        self.email = setup.EMAIL
+        self.password = setup.PASSWORD
+        self.browser = webdriver.Chrome(executable_path=setup.CHROME_PATH)
 
     def get_website(self):
         url = 'https://www.instagram.com/accounts/login/?hl=en'

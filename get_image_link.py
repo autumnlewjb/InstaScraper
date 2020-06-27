@@ -1,12 +1,12 @@
 from bs4 import BeautifulSoup as bs
 from selenium.common.exceptions import ElementNotInteractableException
-from Login import LogIn
+from login import LogIn
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 
-from Logout import LogOut
-from Setup import PAGE_DOWN_TIME
-from InstaScraper import InstaScraper
+from logout import LogOut
+from setup import PAGE_DOWN_TIME
+from insta_scraper import InstaScraper
 
 
 def check_parent(tag):
