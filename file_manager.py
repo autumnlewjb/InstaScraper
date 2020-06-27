@@ -1,6 +1,11 @@
-from Cleaner import rename_repetition
 from setup import SAVE_PATH
 import os
+
+
+def rename_repetition(new_dir, no):
+    break_dir = os.path.splitext(new_dir)
+    new_dir = str(break_dir[0]) + "(" + str(no) + ")" + str(break_dir[1])
+    return new_dir
 
 
 class FileManager:
