@@ -1,12 +1,18 @@
+import io
+from time import sleep
+
+import requests
+from PIL import Image
 from bs4 import BeautifulSoup as bs
 from selenium.common.exceptions import ElementNotInteractableException
-from Login import LogIn
-from time import sleep
 from selenium.webdriver.common.keys import Keys
 
+import Setup
+from FileManager import FileManager
+from InstaScraper import InstaScraper
+from Login import LogIn
 from Logout import LogOut
 from Setup import PAGE_DOWN_TIME
-from InstaScraper import InstaScraper
 
 
 def check_parent(tag):
@@ -29,13 +35,14 @@ def check_parent(tag):
 count = 0
 
 
-class GetImageLink:
+class DownloadImage(InstaScraper):
 
     def __init__(self, browser):
         self.browser = browser
         self.soup = None
         self.links = []
         self.get_link()
+        self.byte = self.fetch_image()
 
     def create_soup(self):
         source = self.browser.page_source
@@ -93,13 +100,32 @@ class GetImageLink:
             LogOut(self.browser).main()
             print(self.links)
 
+    def fetch_image(self):
+        complete = []
+        print(self.links)
+
+        req = [requests.get(lk) for lk in self.links]
+        print('this is run')
+        in_byte = [io.BytesIO(request.content) for request in req]
+        print('this is run')
+        # import pdb; pdb.set_trace()
+        complete.extend(in_byte)
+
+        return complete
+
+    def main(self):
+        for image in self.byte:
+            new_image = Image.open(image)
+            new_file = FileManager()
+            with open(new_file.filename(), 'wb') as fp:
+                new_image.save(fp)
+        return 'All image saved in the directory: ' + Setup.SAVE_PATH
+
 
 if __name__ == '__main__':
     # new_login = LogIn()
     # new_login.main()
-    # get_image = GetImageLink(new_login.browser)
-    # sleep(5)
-    # print(get_image.links)
-    # print(len(get_image.links))
+    # obj = DownloadImage(new_login.browser)
+    # obj.result_gui()
 
     pass
