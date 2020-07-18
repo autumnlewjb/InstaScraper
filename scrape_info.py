@@ -1,6 +1,6 @@
 import time
 
-# from Login import LogIn
+# from login import LogIn
 import setup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -30,13 +30,15 @@ class GetFollower(InstaScraper):
     def _wait(self, element, means='xpath'):
         wait = WebDriverWait(self.browser, 30)
         if means == 'xpath':
-            wait.until(EC.presence_of_element_located((By.XPATH, str(element))))
+            wait.until(EC.element_to_be_clickable((By.XPATH, str(element))))
         elif means == 'class':
-            wait.until(EC.presence_of_element_located((By.CLASS_NAME, str(element))))
+            wait.until(EC.element_to_be_clickable((By.CLASS_NAME, str(element))))
 
     def homepage(self):
+        self.browser.implicitly_wait(10)
         self._wait("//a[@href='/']")
         self.browser.find_element_by_xpath("//a[@href='/']").click()
+        self.browser.implicitly_wait(10)
 
     def profile(self):
         self._wait("//a[@href='/{}/']".format(setup.CURRENT_USERNAME))
@@ -54,12 +56,20 @@ class GetFollower(InstaScraper):
         # time.sleep(30)
 
         flag = list()
+        tmp = 0
         count = 0
 
         while len(flag) < setup.DETAILS['follower']:
-            flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
+            tmp = len(flag)
+            self._wait("/html/body/div[4]/div/div/div[2]")
+            scroll_box = self.browser.find_element_by_xpath("/html/body/div[4]/div/div/div[2]")
+            self.browser.execute_script(
+                    "arguments[0].scrollTo(0, arguments[0].scrollHeight); return arguments[0].scrollHeight;",
+                    scroll_box)
+            flag = self.browser.find_elements_by_xpath("/html/body/div[4]/div/div/div[2]/ul/div/li")
+            if len(flag) == tmp:
+                count += 1
             time.sleep(2)
-            count += 1
             if count % 20 == 0:
                 self.browser.refresh()
                 self._wait("//a[@href='/{}/followers/']".format(setup.CURRENT_USERNAME))
@@ -94,22 +104,33 @@ class GetFollowing(GetFollower):
         self.browser.find_element_by_xpath("//a[@href='/{}/following/']".format(setup.CURRENT_USERNAME)).click()
         # time.sleep(30)
         flag = list()
+        tmp = 0
         count = 0
+
         while len(flag) < setup.DETAILS['following']:
-            flag = self.browser.find_elements_by_xpath("//div[@class='d7ByH']")
+            tmp = len(flag)
+            self._wait("/html/body/div[4]/div/div/div[2]")
+            scroll_box = self.browser.find_element_by_xpath("/html/body/div[4]/div/div/div[2]")
+            self.browser.execute_script(
+                "arguments[0].scrollTo(0, arguments[0].scrollHeight); return arguments[0].scrollHeight;",
+                scroll_box)
+            flag = self.browser.find_elements_by_xpath("/html/body/div[4]/div/div/div[2]/ul/div/li")
+            if len(flag) == tmp:
+                count += 1
             time.sleep(2)
-            count += 1
             if count % 20 == 0:
                 self.browser.refresh()
-                self._wait("//a[@href='/{}/followers/']".format(setup.CURRENT_USERNAME))
-                self.browser.find_element_by_xpath("//a[@href='/{}/followers/']".format(setup.CURRENT_USERNAME)).click()
+                self._wait("//a[@href='/{}/following/']".format(setup.CURRENT_USERNAME))
+                self.browser.find_element_by_xpath("//a[@href='/{}/following/']".format(setup.CURRENT_USERNAME)).click()
+
+            print(len(flag))
 
         self.make_soup()
 
     def main(self):
         self.profile()
         self._following_list()
-        # self.browser.refresh()
+        self.browser.refresh()
         return self._print_list()
 
 
@@ -151,16 +172,16 @@ if __name__ == '__main__':
     # only import when you need it (circular import)
     # login = LogIn()
     # login.main()
-
-    # This must run first
-
+    #
+    # # This must run first
+    #
     # get_follower = GetFollower(login.browser)
     # get_follower.result_gui()
-
+    #
     # get_following = GetFollowing(login.browser)
     # get_following.result_gui()
-
-    # no_friend_list = NoFriend(login.browser)
-    # no_friend_list.result_gui()
+    #
+    # # no_friend_list = NoFriend(login.browser)
+    # # no_friend_list.result_gui()
 
     pass
