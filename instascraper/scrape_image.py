@@ -8,10 +8,9 @@ from selenium.common.exceptions import ElementNotInteractableException
 from selenium.webdriver.common.keys import Keys
 
 import setup
-from file_manager import FileManager
-from insta_scraper import InstaScraper
-from login import LogIn
-from logout import LogOut
+from instascraper.file_manager import FileManager
+from instascraper.scraper_interface import ScraperInterface
+from instascraper.logout import LogOut
 from setup import PAGE_DOWN_TIME
 
 
@@ -35,7 +34,7 @@ def check_parent(tag):
 count = 0
 
 
-class DownloadImage(InstaScraper):
+class DownloadImage(ScraperInterface):
 
     def __init__(self, browser):
         self.browser = browser

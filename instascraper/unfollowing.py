@@ -1,11 +1,5 @@
-import time
-
 import setup
-from scrape_info import NoFriend
-from login import LogIn
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+from instascraper.scrape_info import NoFriend
 
 
 class Unfollowing(NoFriend):

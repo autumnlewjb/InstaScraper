@@ -6,7 +6,7 @@ from tkinter import *
 windll.shcore.SetProcessDpiAwareness(1)
 
 
-class InstaScraper(metaclass=ABCMeta):
+class ScraperInterface(metaclass=ABCMeta):
 
     def result_gui(self):
         tmp = ''

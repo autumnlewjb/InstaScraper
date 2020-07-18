@@ -1,7 +1,7 @@
 from tkinter import *
 import setup
 from ctypes import windll
-from menu import menu
+from instascraper.menu import menu
 
 email = None
 username = None
@@ -128,12 +128,12 @@ def write_info():
     if setup.EMAIL == email and setup.CURRENT_USERNAME == username:
         pass
     else:
-        with open('remember-me.txt', 'w+') as output_file:
+        with open('../resources/remember-me.txt', 'w+') as output_file:
             output_file.write("{},{}".format(email, username))
 
 
 def read_info():
-    with open('remember-me.txt', 'r') as input_file:
+    with open('../resources/remember-me.txt', 'r') as input_file:
         result = input_file.read()
         result = result.strip().split(",")
     if len(result) == 2:
@@ -212,8 +212,8 @@ def add_status():
 
 
 if __name__ == '__main__':
-    # intro_gui()
-    # details_gui()
-    # result_gui()
+    intro_gui()
+    details_gui()
+    result_gui()
 
     pass

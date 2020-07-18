@@ -8,15 +8,16 @@ from selenium.webdriver.support.wait import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 
 import setup
-from insta_scraper import InstaScraper
-from scrape_info import GetNumbers
+from instascraper.scraper_interface import ScraperInterface
+from instascraper.scrape_info import GetNumbers
 
 
-class LogIn(InstaScraper):
+class LogIn(ScraperInterface):
 
     def __init__(self):
         self.email = setup.EMAIL
         self.password = setup.PASSWORD
+        print(setup.CHROME_PATH)
         self.browser = webdriver.Chrome(executable_path=setup.CHROME_PATH)
 
     def get_website(self):
