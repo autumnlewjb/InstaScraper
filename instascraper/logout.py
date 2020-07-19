@@ -1,8 +1,8 @@
 from setup import CURRENT_USERNAME
-from insta_scraper import InstaScraper
+from instascraper.scraper_interface import ScraperInterface
 
 
-class LogOut(InstaScraper):
+class LogOut(ScraperInterface):
     def __init__(self, browser):
         self.browser = browser
 

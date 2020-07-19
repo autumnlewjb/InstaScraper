@@ -1,9 +1,9 @@
-from gui import intro_gui, details_gui
-from login import LogIn
-from scrape_info import GetFollower, GetFollowing, GetNumbers, NoFriend
-from logout import LogOut
-from scrape_image import DownloadImage
-from unfollowing import Unfollowing
+from instascraper.GUI import intro_gui, details_gui
+from instascraper.login import LogIn
+from instascraper.scrape_info import GetFollower, GetFollowing, GetNumbers, NoFriend
+from instascraper.logout import LogOut
+from instascraper.scrape_image import DownloadImage
+from instascraper.unfollowing import Unfollowing
 
 
 if __name__ == '__main__':

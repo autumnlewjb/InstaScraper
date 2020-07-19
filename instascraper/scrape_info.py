@@ -2,17 +2,12 @@ import time
 
 # from login import LogIn
 import setup
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup as bs
-import re
-import subprocess as sub
 from tkinter import *
-import os
-from insta_scraper import InstaScraper
+from instascraper.scraper_interface import ScraperInterface
 
 
 def filter_li(tag):
@@ -22,7 +17,7 @@ def filter_li(tag):
         return False
 
 
-class GetFollower(InstaScraper):
+class GetFollower(ScraperInterface):
     def __init__(self, browser):
         self.browser = browser
         self.soup = None
